@@ -20,7 +20,11 @@ module Spree
     end
 
     def displayable?(display_on)
-      (self.display_on == display_on.to_s || self.display_on.blank?)
+      if display_on == :both
+        displayable?(:back_end) || displayable?(:front_end)
+      else
+        (self.display_on == display_on.to_s || self.display_on.blank?)
+      end
     end
 
     def within_zone?(order)

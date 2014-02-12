@@ -17,7 +17,7 @@ module Spree
 
         def update
           if @order.update_attributes(params[:order])
-            shipping_method = @order.available_shipping_methods(:back_end).first
+            shipping_method = @order.available_shipping_methods(:both).first
             if shipping_method
               @order.shipping_method = shipping_method
 
