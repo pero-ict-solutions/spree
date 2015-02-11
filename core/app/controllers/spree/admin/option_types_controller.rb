@@ -3,6 +3,14 @@ module Spree
     class OptionTypesController < ResourceController
       before_filter :setup_new_option_value, :only => [:edit]
 
+      def index
+        respond_with(@collection) do |format|
+          format.html
+          format.json { render :json => json_data }
+        end
+      end
+
+
       def update_values_positions
         params[:positions].each do |id, index|
           OptionValue.where(:id => id).update_all(:position => index)
@@ -24,6 +32,21 @@ module Spree
           end
         end
 
+        def collection
+          return @collection if @collection.present?
+
+          unless request.xhr?
+            params[:q] ||= {}
+            params[:q][:s] ||= "name asc"
+
+            @search = super.ransack(params[:q])
+            @collection = @search.result.page(params[:page]).per(25)
+          else
+            @collection = super.where(["name #{LIKE} ?", "%#{params[:q]}%"])
+            @collection = @collection.limit(params[:limit] || 10)
+          end
+          @collection
+        end
 
       private
         def load_product
