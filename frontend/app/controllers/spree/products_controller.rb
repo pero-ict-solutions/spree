@@ -20,6 +20,7 @@ module Spree
       @taxon = Spree::Taxon.find(params[:taxon_id]) if params[:taxon_id]
       redirect_if_legacy_path
     end
+    
 
     private
 
