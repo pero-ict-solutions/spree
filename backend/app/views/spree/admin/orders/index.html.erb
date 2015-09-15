@@ -200,7 +200,7 @@
           <% if order.user %>
             <%= link_to order.email, edit_admin_user_path(order.user) %>
           <% else %>
-            <%= mail_to order.email %>
+            <%= mail_to order.email if order.email%>
           <% end %>
           <% if order.user || order.email %>
             <span class="icon icon-filter filterable js-add-filter" data-ransack-field="q_email_cont" data-ransack-value="<%= order.email %>"></span>
